@@ -29,13 +29,27 @@ interface Balance {
   total: string;
 }
 
+interface Response {
+  transactions: Transaction[];
+  balance: Balance;
+}
+
 const Dashboard: React.FC = () => {
-  // const [transactions, setTransactions] = useState<Transaction[]>([]);
-  // const [balance, setBalance] = useState<Balance>({} as Balance);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [balance, setBalance] = useState<Balance>({} as Balance);
 
   useEffect(() => {
     async function loadTransactions(): Promise<void> {
-      // TODO
+      const response = await api.get<Response>('transactions');
+
+      const {
+        transactions: myTransactions,
+        balance: myBalance,
+      } = response.data;
+
+      setTransactions(myTransactions);
+
+      setBalance(myBalance);
     }
 
     loadTransactions();
@@ -79,20 +93,32 @@ const Dashboard: React.FC = () => {
                 <th>Data</th>
               </tr>
             </thead>
-
+            w
+{' '}
             <tbody>
-              <tr>
-                <td className="title">Computer</td>
-                <td className="income">R$ 5.000,00</td>
-                <td>Sell</td>
-                <td>20/04/2020</td>
-              </tr>
-              <tr>
+              {transactions.map(transaction => (
+                <tr key={transaction.id}>
+                  <td className="title">{transaction.title}</td>
+                  <td className={transaction.type}>
+                    R$
+                    {transaction.value}
+                  </td>
+                  <td>{transaction.category.title}</td>
+                  <td>
+                    {Intl.DateTimeFormat('pt-BR', {
+                      year: 'numeric',
+                      month: 'numeric',
+                      day: '2-digit',
+                    }).format(new Date(transaction.created_at))}
+                  </td>
+                </tr>
+              ))}
+              {/* <tr>
                 <td className="title">Website Hosting</td>
                 <td className="outcome">- R$ 1.000,00</td>
                 <td>Hosting</td>
                 <td>19/04/2020</td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
         </TableContainer>
