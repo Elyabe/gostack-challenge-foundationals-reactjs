@@ -65,21 +65,27 @@ const Dashboard: React.FC = () => {
               <p>Entradas</p>
               <img src={income} alt="Income" />
             </header>
-            <h1 data-testid="balance-income">R$ 5.000,00</h1>
+            <h1 data-testid="balance-income">
+              {formatValue(Number(balance.income))}
+            </h1>
           </Card>
           <Card>
             <header>
               <p>Saídas</p>
               <img src={outcome} alt="Outcome" />
             </header>
-            <h1 data-testid="balance-outcome">R$ 1.000,00</h1>
+            <h1 data-testid="balance-outcome">
+              {formatValue(Number(balance.outcome))}
+            </h1>
           </Card>
           <Card total>
             <header>
               <p>Total</p>
               <img src={total} alt="Total" />
             </header>
-            <h1 data-testid="balance-total">R$ 4000,00</h1>
+            <h1 data-testid="balance-total">
+              {formatValue(Number(balance.total))}
+            </h1>
           </Card>
         </CardContainer>
 
@@ -93,32 +99,18 @@ const Dashboard: React.FC = () => {
                 <th>Data</th>
               </tr>
             </thead>
-            w
-{' '}
             <tbody>
               {transactions.map(transaction => (
                 <tr key={transaction.id}>
                   <td className="title">{transaction.title}</td>
                   <td className={transaction.type}>
-                    R$
-                    {transaction.value}
+                    {transaction.type === 'outcome' && '- '}
+                    {formatValue(Number(transaction.value))}
                   </td>
                   <td>{transaction.category.title}</td>
-                  <td>
-                    {Intl.DateTimeFormat('pt-BR', {
-                      year: 'numeric',
-                      month: 'numeric',
-                      day: '2-digit',
-                    }).format(new Date(transaction.created_at))}
-                  </td>
+                  <td>{transaction.created_at}</td>
                 </tr>
               ))}
-              {/* <tr>
-                <td className="title">Website Hosting</td>
-                <td className="outcome">- R$ 1.000,00</td>
-                <td>Hosting</td>
-                <td>19/04/2020</td>
-              </tr> */}
             </tbody>
           </table>
         </TableContainer>

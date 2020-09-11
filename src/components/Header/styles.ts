@@ -23,12 +23,21 @@ export const Container = styled.div<ContainerProps>`
         font-size: 16px;
         transition: opacity 0.2s;
 
+        /* Add by me */
+        line-height: 24px;
+        padding-bottom: 10px;
+
         & + a {
           margin-left: 32px;
         }
 
         &:hover {
           opacity: 0.6;
+        }
+
+        &.active {
+          border-bottom: 2px solid #ff872c;
+          color: #ff872c;
         }
       }
     }
